@@ -398,35 +398,39 @@ void createReservation() {
     ss << setw(4) << setfill('0') << (logCount + 1);
     id = ss.str();
 	
-	float paymentAmount;
-    log[logCount]->setPrice(roomType);
-    log[logCount]->setReservationFee();
-    isValid = false;
-    while(!isValid){
-        	cout << "Reservation Fee - " << log[logCount]->getReservationFee();
-	        cout << "\nPlease enter payment amount: ";
-	        cin >> input;  // Read input as a string
+	float paymentAmount = 0.0f;  // Initialize the paymentAmount to 0
+log[logCount]->setPrice(roomType);
+log[logCount]->setReservationFee();
+isValid = false;
 
-	        if (validPayment(input, paymentAmount)&&(paymentAmount == log[logCount]->getReservationFee())) {  // Validate the integer
-	        	cout << "Choose Payment Method (1 - Credit Card, 2 - Cash, 3 - PayPal): ";
-                cin >> choice;
-                if (choice == 1) {
-                    paymentMethod = new CreditCardPayment();
-                } else if (choice == 2) {
-                    paymentMethod = new CashPayment();
-                } else if (choice == 3) {
-                    paymentMethod = new PayPalPayment();
-                } else {
-                    cout << "Invalid choice!" << endl;
-                    return;
-                }
-                paymentMethod->paymentMethod(paymentAmount);
-                cout << "Payment successful. Reservation fully paid!" << endl;
-	            isValid = true;  // Valid input
-	        } else {
-	            cout << "Please enter a valid amount.\n";
-		}
-	}
+while (!isValid) {
+    cout << "Reservation Fee - " << log[logCount]->getReservationFee() << endl;
+    cout << "\nPlease enter payment amount: ";
+    cin >> input;  // Read input as a string
+
+    // Validate and assign paymentAmount correctly
+    if (validPayment(input, paymentAmount) && (paymentAmount == log[logCount]->getReservationFee())) {  
+        cout << "Choose Payment Method (1 - Credit Card, 2 - Cash, 3 - PayPal): ";
+        cin >> choice;
+        if (choice == 1) {
+            paymentMethod = new CreditCardPayment();
+        } else if (choice == 2) {
+            paymentMethod = new CashPayment();
+        } else if (choice == 3) {
+            paymentMethod = new PayPalPayment();
+        } else {
+            cout << "Invalid choice!" << endl;
+            return;
+        }
+
+        paymentMethod->paymentMethod(paymentAmount);
+        cout << "Payment successful. Reservation fully paid!" << endl;
+        isValid = true;  // Valid input
+    } else {
+        cout << "Please enter a valid amount.\n";
+    }
+}
+
     
     log[logCount] = new Log(id, name, date, year, month, day, roomNo, roomType, paymentAmount);
     logCount++;
@@ -440,7 +444,6 @@ void createReservation() {
     cout << "Date: " << date << endl;
     system("pause"); system("cls");
 }
-
 
 void updateReservation() {
 string reservationID, input;
@@ -679,7 +682,6 @@ void checkOut() {
         for (int i = 0; i < logCount; i++) {
             if (log[i]->getReservationID() == reservationID) {
                 while (!isValid){
-                    cin.ignore();
                     cout << "Please input the amount of days you stayed: ";
                     getline(cin, input);
                     if (validInteger(input, days)) {  // Validate the integer
@@ -699,7 +701,6 @@ void checkOut() {
                 while(!isValid){
                     while(!isValid){
                         cout << "Total Cost - P" << amount;
-                        cin.ignore();
                         cout << "\nPlease enter payment amount: ";
                         getline(cin, input);  // Read input as a string
           
@@ -711,7 +712,7 @@ void checkOut() {
                     
                       isValid = false;
                     while(!isValid){
-                        if (paymentAmount == amount) {
+                        if (paymentAmount == amount) {	
                             cout << "Choose Payment Method (1 - Credit Card, 2 - Cash, 3 - PayPal): ";
                             getline(cin, input);
                             if (validInteger(input, choice)){
@@ -753,6 +754,7 @@ void checkOut() {
 
 void checkIn() {
     string reservationID;
+    cin.ignore();
     cout << "Enter reservation ID to check in: ";
     getline(cin, reservationID);
     
