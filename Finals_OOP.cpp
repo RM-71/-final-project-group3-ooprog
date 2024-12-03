@@ -222,12 +222,16 @@ public:
 	    else if (roomType == "suite") roomPrice = 20000;
 	}
     void display() {
-    // Set the width of each field to ensure proper alignment
+    	cout << setw(8) << "ID"
+         << setw(15) << "Name"
+         << setw(15) << "Date"
+         << setw(20) << "Room No" 
+         << setw(20) << "Type of Room" << endl;
     cout << setw(8) << reservationID 
          << setw(15) << name 
          << setw(15) << date 
-         << setw(12) << roomNo 
-         << setw(12) << typeOfRoom << endl;
+         << setw(20) << roomNo 
+         << setw(20) << typeOfRoom << endl;
     }
 };
 
